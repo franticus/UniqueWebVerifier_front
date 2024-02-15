@@ -47,10 +47,26 @@ function sendFileToServer(file) {
 function updateResultList(data) {
   resultList.innerHTML = ''; // Очищаем текущий список
 
-  // Предполагаем, что data - это массив результатов
+  // Перебор данных для создания элементов списка с показателями в span
   data.forEach(item => {
     const listItem = document.createElement('li');
-    listItem.textContent = `Имя файла: ${item.name}, Уникальность: ${item.uniquePercentage}, Индекс Жаккарда: ${item.jaccardPercentage}`;
+
+    // Создаем и добавляем span для имени файла
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = `${item.name}`;
+    listItem.appendChild(nameSpan);
+
+    // Создаем и добавляем span для уникальности
+    const uniqueSpan = document.createElement('span');
+    uniqueSpan.textContent = ` | Уникальность: ${item.uniquePercentage} |`;
+    listItem.appendChild(uniqueSpan);
+
+    // Создаем и добавляем span для индекса Жаккарда
+    const jaccardSpan = document.createElement('span');
+    jaccardSpan.textContent = ` Индекс Жаккарда: ${item.jaccardPercentage}`;
+    listItem.appendChild(jaccardSpan);
+
+    // Добавляем элемент списка в resultList
     resultList.appendChild(listItem);
   });
 }

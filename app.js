@@ -33,13 +33,26 @@ function sendFileToServer(file) {
     method: 'POST',
     body: formData,
   })
-    .then(response => response.text())
+    .then(response => response.json()) // Предполагаем, что ответ в формате JSON
     .then(data => {
       console.log('data:', data);
+      updateResultList(data); // Обновляем список на основе полученных данных
     })
     .catch(error => {
       console.error('Ошибка:', error);
     });
+}
+
+// Обновление списка результатов на странице
+function updateResultList(data) {
+  resultList.innerHTML = ''; // Очищаем текущий список
+
+  // Предполагаем, что data - это массив результатов
+  data.forEach(item => {
+    const listItem = document.createElement('li');
+    listItem.textContent = `Имя файла: ${item.name}, Уникальность: ${item.uniquePercentage}, Индекс Жаккарда: ${item.jaccardPercentage}`;
+    resultList.appendChild(listItem);
+  });
 }
 
 // Назначение обработчиков событий

@@ -36,6 +36,7 @@ function sendFileToServer(file) {
     .then(response => response.json()) // Предполагаем, что ответ в формате JSON
     .then(data => {
       console.log('data:', data);
+      data.shift();
       updateResultList(data); // Обновляем список на основе полученных данных
     })
     .catch(error => {

@@ -36,7 +36,6 @@ function sendFileToServer(file) {
     .then(response => response.json()) // Предполагаем, что ответ в формате JSON
     .then(data => {
       console.log('data:', data);
-      data.shift();
       updateResultList(data); // Обновляем список на основе полученных данных
     })
     .catch(error => {
@@ -49,23 +48,26 @@ function updateResultList(data) {
   resultList.innerHTML = ''; // Очищаем текущий список
 
   // Перебор данных для создания элементов списка с показателями в span
-  data.forEach(item => {
+  data.forEach((item, index) => {
     const listItem = document.createElement('li');
 
-    // Создаем и добавляем span для имени файла
-    const nameSpan = document.createElement('span');
-    nameSpan.textContent = `${item.name}`;
-    listItem.appendChild(nameSpan);
+    if (index > 0) {
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = `${item.name}`;
+      listItem.appendChild(nameSpan);
 
-    // Создаем и добавляем span для уникальности
-    const uniqueSpan = document.createElement('span');
-    uniqueSpan.textContent = ` | Уникальность: ${item.uniquePercentage} |`;
-    listItem.appendChild(uniqueSpan);
-
-    // Создаем и добавляем span для индекса Жаккарда
-    const jaccardSpan = document.createElement('span');
-    jaccardSpan.textContent = ` Индекс Жаккарда: ${item.jaccardPercentage}`;
-    listItem.appendChild(jaccardSpan);
+      const uniqueSpan = document.createElement('span');
+      uniqueSpan.textContent = ` | Уникальность: ${item.uniquePercentage} %`;
+      listItem.appendChild(uniqueSpan);
+    } else {
+      listItem.style.padding = '20px';
+      listItem.style.border = 'none';
+      listItem.style.pointerEvents = 'none';
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = `${item.name}`;
+      nameSpan.style.fontWeight = '600';
+      listItem.appendChild(nameSpan);
+    }
 
     // Добавляем элемент списка в resultList
     resultList.appendChild(listItem);
